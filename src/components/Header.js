@@ -4,7 +4,7 @@ import delivery from "../img/delivery.gif";
 import logo from "../img/logo.png";
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
 import MenuOutlinedIcon from '@material-ui/icons/MenuOutlined';
-import SearchOutlinedIcon from "@material-ui/icons/SearchIcon"; 
+import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined'; 
 import RoomOutlinedIcon from '@material-ui/icons/Room';
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined"; 
 
@@ -48,8 +48,8 @@ function Header() {
           </GnbSearchBox>
         </GnbSearch>
         <GnbCart>
-           <RoomOutlinedIcon />
-           <ShoppingCartOutlinedIcon />
+           <RoomOutlinedIcon className="room" />
+           <ShoppingCartOutlinedIcon className="cart"/>
         </GnbCart>
       </HeaderGnb>
     </HeaderStyle>
@@ -116,7 +116,7 @@ const HeaderGnb = styled.div`
   align-items: center;
   font-weight: 700;
   font-size: 16px;
-  background: pink;
+  
 `;
 const GnbCategory = styled.a`
   display: flex;
@@ -156,5 +156,22 @@ const GnbSearchBox = styled.div`
   padding:0px 5px;
 `;
 const GnbCart = styled.div`
+  
+  padding-left:45px;
+  display:flex;
+  width:100px;
+  
+ 
+  .room{
+      font-size:35px;
+      background:#fff;
+      
+  }
 
+  .cart{
+      margin-left:2rem;
+      font-size:35px;
+  }
+
+  
 `
