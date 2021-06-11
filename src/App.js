@@ -1,10 +1,10 @@
-import './App.css';
-import Main from './pages/Main';
+import "./App.css";
+import LoginForm from "./components/form/LoginForm";
 
 function App() {
   return (
     <div>
-       <Main />
+      <LoginForm />
     </div>
   );
 }
