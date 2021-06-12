@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import logo_on from "../../img/ico_checkbox_on.png";
-import logo_off from "../../img/ico_checkbox_off.png";
 
 const LoginForm = () => {
-  const [checked, setChecked] = React.useState(false);
 
   return (
     <LoginSection>
@@ -14,22 +11,11 @@ const LoginForm = () => {
           <form>
             <input type="text" placeholder="아이디를 입력해주세요" />
             <input type="password" placeholder="비밀번호를 입력해주세요" />
-            <SaveBox>
-              <SaveLabel checked={checked}>
-                <input
-                  type="checkbox"
-                  defaultChecked={checked}
-                  checked={checked}
-                  onChange={() => setChecked(!checked)}
-                />
-                체크박스
-              </SaveLabel>
-              <LoginSearch>
-                <a>아이디 찾기</a>
-                <Bar></Bar>
-                <a>비밀번호 찾기</a>
-              </LoginSearch>
-            </SaveBox>
+            <LoginSearch>
+              <a>아이디 찾기</a>
+              <Bar></Bar>
+              <a>비밀번호 찾기</a>
+            </LoginSearch>
             <LoginButton>
               <span>로그인</span>
             </LoginButton>
@@ -86,32 +72,14 @@ const LoginView = styled.div`
   }
 `;
 
-const SaveBox = styled.div`
-  /* position: relative; */
+const LoginSearch = styled.div`
   overflow: hidden;
-  float: left;
+  width: 340px;
+  padding-top: 13px;
   margin-top: 9px;
   padding-bottom: 28px;
-`;
-
-const SaveLabel = styled.div`
-  content: "";
-  left: 0;
-  top: 3px;
-  width: 16px;
-  height: 17px;
-  position: relative;
-
-  background: ${(props) => (props.checked ? "red" : "gold")};
-
-  input[type="checkbox"] {
-    opacity: 0;
-  }
-`;
-
-const LoginSearch = styled.div`
-  float: right;
-  padding-top: 13px;
+  display: flex;
+  justify-content: flex-end;
 
   a {
     float: left;
@@ -120,11 +88,11 @@ const LoginSearch = styled.div`
 `;
 
 const Bar = styled.div`
-  float: left;
   width: 1px;
   height: 10px;
   margin: 3px 6px 0;
   background-color: #333;
+
 `;
 
 const Button = styled.button`
