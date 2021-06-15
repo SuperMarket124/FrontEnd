@@ -5,12 +5,11 @@ import RegisterForm from "../components/form/RegisterForm"
 // import LoginFindIdForm from "../components/form/LoginFindIdForm"
 // import LoginFindPwdForm from "../components/form/LoginFindPwdForm"
 
-
 function Main() {
     return (
         <div>
             <Header />
-            <RegisterForm/>
+            <RegisterForm />
         </div>
     )
 }

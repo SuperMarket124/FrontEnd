@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import FormButton from "../../components/FormButton"
+import FormInputText from "../../components/FormInputText"
+
 
 const LoginFindPwdForm = () => {
   return (
@@ -9,13 +12,13 @@ const LoginFindPwdForm = () => {
         <LoginFindIdView>
           <form>
             <p>이름</p>
-            <input type="text" placeholder="고객님의 이름을 입력해주세요." />
+            <FormInputText type="text" placeholder="고객님의 이름을 입력해주세요." />
             <p>아이디</p>
-            <input type="text" placeholder="고객님의 이름을 입력해주세요." />
+            <FormInputText type="text" placeholder="고객님의 이름을 입력해주세요." />
             <p>이메일</p>
-            <input type="text" placeholder="가입 시 등록하신 이메일 주소를 입력해주세요" />
-            <FindButton>
-              <span>찾기</span>
+            <FormInputText type="text" placeholder="가입 시 등록하신 이메일 주소를 입력해주세요" />
+            <FindButton color="purple">
+              찾기
             </FindButton>
           </form>
         </LoginFindIdView>
@@ -55,40 +58,8 @@ const WriteForm = styled.div`
 
 const LoginFindIdView = styled.div`
   text-align: center;
-
-  input {
-    width: 100%;
-    height: 54px;
-    padding: 0 19px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    background-color: #fff;
-    font-size: 14px;
-    line-height: 20px;
-    outline: none;
-    &:focus {
-      border: 1px solid #333;
-    }
-  }
 `;
 
-const Button = styled.button`
-  display: block;
-  overflow: hidden;
-  width: 100%;
-  height: 54px;
-  border-radius: 3px;
-  font-size: 16px;
-  font-weight: 500;
-  text-align: center;
-  cursor: pointer;
-`;
-
-const FindButton = styled(Button)`
-  margin-top: 30px;
-  border: 1px solid #5f0081;
-  background-color: #5f0080;
-  span {
-    color: #fff;
-  }
+const FindButton = styled(FormButton)`
+    margin-top: 30px;
 `;
