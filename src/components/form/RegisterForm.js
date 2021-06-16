@@ -1,21 +1,42 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
+import { color } from "../../theme";
+
 import FormInputText from "../FormInputText";
 import FormButton from "../FormButton";
 import FormRadioButton from "../FormRadioButton";
-import { color } from "../../theme";
+import Postcode from "@actbase/react-daum-postcode";
 
 // TODO image url change
-// TODO 주소 검색(+재검색)
+// TODO 주소 검색(+재검색) -> 1순위(외부 모듈)
 // TODO 알림메시지 모달
 // TODO 이용 양관 동의 버튼
+// TODO input마다 폼 체크
 // TODO 폼 체크 후 전송
 
 const RegisterForm = () => {
-  const [idValidate, setIdValidate] = useState(false);
-  const [passwordValidate, setPasswordValidate] = useState(false);
-  const [passwordChkValidate, setPasswordChkValidate] = useState(false);
+  // FIXME address(진행중)
+  const [address, setAddress] = useState("");
+  const [addressDetail, setAddressDetail] = useState("");
+
+  const [idValidate, setIdValidate] = useState(true);
+  const [passwordValidate, setPasswordValidate] = useState(true);
+  const [passwordChkValidate, setPasswordChkValidate] = useState(true);
   const [addressFlag, setAddressFlag] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+
+  const [inputs, setInputs] = useState({
+    id: "",
+    password: "",
+    passwordChk: "",
+    username: "",
+    email: "",
+    phone: "",
+    address: "",
+    detailedAddress: "",
+    birthYear: "",
+    birth: "",
+  });
 
   const checkId = () => {
     //
@@ -24,12 +45,62 @@ const RegisterForm = () => {
   const checkPassword = () => {
     //
   };
+
   const checkPasswordChk = () => {
     //
   };
+
+  const checkBirthday = () => {
+    //
+  };
+
   const hasAddress = () => {
     //
   };
+
+  const onChange = (e) => {
+    const { value, name } = e.target;
+  };
+
+  const showGuideText = () => {};
+
+  const checkValidate = ({ value, name }) => {
+    let result = false;
+    switch (name) {
+      case "id":
+        result = checkId(value);
+        break;
+      case "password":
+        result = checkPassword(value);
+        break;
+      case "passwordChk":
+        result = checkPasswordChk(value);
+        break;
+      case "birthday":
+        result = checkBirthday(value);
+        break;
+      default:
+        break;
+    }
+
+    return result;
+  };
+
+  const onBlur = (e) => {
+    const { value, name } = e.target;
+    console.log(value, name);
+    if (!checkValidate(value, name)) {
+      showGuideText();
+      return;
+    }
+
+    setInputs({
+      ...inputs, // 기존의 input 객체를 복사한 뒤
+      [name]: value, // name 키를 가진 값을 value 로 설정
+    });
+  };
+
+  const searchAddress = (e) => {};
 
   return (
     <MemberJoinForm>
@@ -54,14 +125,18 @@ const RegisterForm = () => {
                   label="아이디"
                   name="id"
                   placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
+                  onChange={onChange}
+                  onBlur={onBlur}
                 />
                 <FeedbackButton color="white">중복확인</FeedbackButton>
-                <GuideText>
-                  <span className="bad">
-                    6자 이상의 영문 혹은 영문과 숫자를 조합
-                  </span>
-                  <span className="info">아이디 중복확인</span>
-                </GuideText>
+                {idValidate ? null : (
+                  <GuideText>
+                    <span className="bad">
+                      6자 이상의 영문 혹은 영문과 숫자를 조합
+                    </span>
+                    <span className="info">아이디 중복확인</span>
+                  </GuideText>
+                )}
               </td>
             </tr>
             <tr>
@@ -74,16 +149,20 @@ const RegisterForm = () => {
                   type="password"
                   name="password"
                   placeholder="비밀번호를 입력해주세요"
+                  onChange={onChange}
+                  onBlur={onBlur}
                 />
-                <GuideText>
-                  <span className="info">10자 이상 입력</span>
-                  <span className="info">
-                    영문/숫자/특수문자(공백 제외)만 허용하며, 2개 이상 조합
-                  </span>
-                  <span className="info">
-                    동일한 숫자3개 이상 연속 사용 불가
-                  </span>
-                </GuideText>
+                {passwordValidate ? null : (
+                  <GuideText>
+                    <span className="info">10자 이상 입력</span>
+                    <span className="info">
+                      영문/숫자/특수문자(공백 제외)만 허용하며, 2개 이상 조합
+                    </span>
+                    <span className="info">
+                      동일한 숫자3개 이상 연속 사용 불가
+                    </span>
+                  </GuideText>
+                )}
               </td>
             </tr>
             <tr>
@@ -96,10 +175,16 @@ const RegisterForm = () => {
                   type="password"
                   name="passwordChk"
                   placeholder="비밀번호를 한번 더 입력해주세요"
+                  onChange={onChange}
+                  onBlur={onBlur}
                 />
-                <GuideText>
-                  <span className="info">동일한 비밀번호를 입력해주세요.</span>
-                </GuideText>
+                {passwordChkValidate ? null : (
+                  <GuideText>
+                    <span className="info">
+                      동일한 비밀번호를 입력해주세요.
+                    </span>
+                  </GuideText>
+                )}
               </td>
             </tr>
             <tr>
@@ -112,6 +197,7 @@ const RegisterForm = () => {
                   type="text"
                   name="username"
                   placeholder="이름을 입력해주세요"
+                  onChange={onChange}
                 />
               </td>
             </tr>
@@ -125,6 +211,7 @@ const RegisterForm = () => {
                   type="text"
                   name="email"
                   placeholder="예: supermarket@kurly.com"
+                  onChange={onChange}
                 />
                 <FeedbackButton color="white">중복확인</FeedbackButton>
               </td>
@@ -139,6 +226,7 @@ const RegisterForm = () => {
                   type="text"
                   name="phone"
                   placeholder="숫자만 입력해주세요"
+                  onChange={onChange}
                 />
               </td>
             </tr>
@@ -149,9 +237,22 @@ const RegisterForm = () => {
               </th>
               <td>
                 {!addressFlag ? (
-                  <SearchAddressButton color="white">
-                    주소 검색
-                  </SearchAddressButton>
+                  isModal ? (
+                    <Postcode
+                      jsOptions={{ animated: true, hideMapBtn: false }}
+                      onSelected={(data) => {
+                        // alert(JSON.stringify(data));
+                        setIsModal(false);
+                      }}
+                    />
+                  ) : (
+                    <SearchAddressButton
+                      color="white"
+                      onClick={() => setIsModal(true)}
+                    >
+                      주소찾기
+                    </SearchAddressButton>
+                  )
                 ) : (
                   <>
                     <RegisterFormInputText
@@ -193,13 +294,14 @@ const RegisterForm = () => {
                   <input
                     id="birth_year"
                     type="text"
-                    name="birth_year"
+                    name="birthYear"
                     pattern="[0-9]*"
                     value=""
                     label="생년월일"
                     size="4"
                     maxLength="4"
                     placeholder="YYYY"
+                    onChange={onChange}
                   />
                   <span className="bar"></span>
                   <input
@@ -213,6 +315,7 @@ const RegisterForm = () => {
                     size="2"
                     maxLength="2"
                     placeholder="MM"
+                    onChange={onChange}
                   />
                   <span className="bar"></span>
                   <input
@@ -225,6 +328,7 @@ const RegisterForm = () => {
                     size="2"
                     maxLength="2"
                     placeholder="DD"
+                    onChange={onChange}
                   />
                 </BirthdayText>
               </td>

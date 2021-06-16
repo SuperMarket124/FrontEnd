@@ -16,4 +16,5 @@ export const color = {
   T_BORDER_BOTTOM: "#f4f4f4",
   T_TEXT_HEADER: "#333333",
   T_TEXT_GRAY: "#666666",
+  T_BORDER_BUTTON: "#f7f7f7",
 };
