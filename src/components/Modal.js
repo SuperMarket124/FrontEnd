@@ -3,8 +3,18 @@ import styled, { css } from "styled-components";
 import { color } from "../theme";
 
 // TODO windows size[https://spi.maps.daum.net/postcode/guidessl#attributes]
+
+const openStyles = css`
+  ${(props) =>
+    props.open &&
+    css`
+      display: flex;
+      align-items: center;
+    `}
+`;
+
 const ModalView = styled.section`
-  /* display: none; */
+  display: none;
   position: fixed;
   top: 0;
   right: 0;
@@ -12,6 +22,8 @@ const ModalView = styled.section`
   left: 0;
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.7);
+
+  ${openStyles};
 
   display: flex;
   justify-content: center;
@@ -28,20 +40,14 @@ const ModalView = styled.section`
     overflow: hidden;
 
     main {
-      padding: 16px;
+      padding: 5px;
       text-align: center;
     }
 
     footer {
-      padding: 12px 16px;
       text-align: right;
     }
   }
-`;
-
-const CloseHeader = styled.div`
-  height: 28px;
-  background-color: ${color.WHITE};
 `;
 
 const CloseButton = styled.button`
@@ -54,7 +60,7 @@ const CloseButton = styled.button`
   border: 0;
   border-top: 1px solid ${color.T_BORDER_BUTTON};
   border-radius: 0 0 4px 4px;
-  background-color: #fff;
+  background-color: ${color.WHITE};
   font-weight: 600;
   font-size: 16px;
   color: ${color.PURPLE};
@@ -64,20 +70,23 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-//{/* <main>{children}</main> */}
 const Modal = (props) => {
   const { open, close, header } = props;
 
   return (
-    <ModalView>
-      <section>
-        <header>{header}</header>
-        <main>{props.children}</main>
-        <footer>
-          <CloseButton onClick={close}>닫기</CloseButton>
-        </footer>
-      </section>
-    </ModalView>
+    <>
+      {open ? (
+        <ModalView>
+          <section>
+            <header>{header}</header>
+            <main>{props.children}</main>
+            <footer>
+              <CloseButton onClick={close}>닫기</CloseButton>
+            </footer>
+          </section>
+        </ModalView>
+      ) : null}
+    </>
   );
 };
 

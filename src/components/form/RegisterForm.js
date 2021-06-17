@@ -5,7 +5,8 @@ import { color } from "../../theme";
 import FormInputText from "../FormInputText";
 import FormButton from "../FormButton";
 import FormRadioButton from "../FormRadioButton";
-import Postcode from "@actbase/react-daum-postcode";
+import Modal from "../Modal";
+import DaumPostCode from "react-daum-postcode";
 
 // TODO image url change
 // TODO 주소 검색(+재검색) -> 1순위(외부 모듈)
@@ -16,14 +17,15 @@ import Postcode from "@actbase/react-daum-postcode";
 
 const RegisterForm = () => {
   // FIXME address(진행중)
-  const [address, setAddress] = useState("");
-  const [addressDetail, setAddressDetail] = useState("");
+  // const [address, setAddress] = useState("");
+  // const [addressDetail, setAddressDetail] = useState("");
 
   const [idValidate, setIdValidate] = useState(true);
   const [passwordValidate, setPasswordValidate] = useState(true);
   const [passwordChkValidate, setPasswordChkValidate] = useState(true);
+
   const [addressFlag, setAddressFlag] = useState(false);
-  const [isModal, setIsModal] = useState(false);
+  const [isAddressModal, setAddressModal] = useState(false);
 
   const [inputs, setInputs] = useState({
     id: "",
@@ -37,6 +39,19 @@ const RegisterForm = () => {
     birthYear: "",
     birth: "",
   });
+
+  const {
+    id,
+    password,
+    passwordChk,
+    username,
+    email,
+    phone,
+    address,
+    detailedAddress,
+    birthYear,
+    birth,
+  } = inputs;
 
   const checkId = () => {
     //
@@ -60,6 +75,10 @@ const RegisterForm = () => {
 
   const onChange = (e) => {
     const { value, name } = e.target;
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
   };
 
   const showGuideText = () => {};
@@ -100,7 +119,44 @@ const RegisterForm = () => {
     });
   };
 
-  const searchAddress = (e) => {};
+  const openAddressModal = () => {
+    setAddressFlag(false);
+    setAddressModal(true);
+  };
+
+  const closeAddressModal = () => {
+    setAddressModal(false);
+  };
+
+  const registerAddress = (data) => {
+    let _fullAddress = data.address;
+    let _extraAddress = "";
+
+    if (_fullAddress === null) {
+      return;
+    }
+
+    if (data.addressType === "R") {
+      if (data.bname !== "") {
+        _extraAddress += data.bname;
+      }
+      if (data.buildingName !== "") {
+        _extraAddress +=
+          _extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
+      }
+      _fullAddress += _extraAddress !== "" ? ` (${_extraAddress})` : "";
+    }
+    console.log(_fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+
+    setInputs({
+      address: _fullAddress,
+      detailedAddress: "",
+    });
+
+    setAddressFlag(true);
+
+    closeAddressModal();
+  };
 
   return (
     <MemberJoinForm>
@@ -237,33 +293,36 @@ const RegisterForm = () => {
               </th>
               <td>
                 {!addressFlag ? (
-                  isModal ? (
-                    <Postcode
-                      jsOptions={{ animated: true, hideMapBtn: false }}
-                      onSelected={(data) => {
-                        // alert(JSON.stringify(data));
-                        setIsModal(false);
-                      }}
-                    />
-                  ) : (
+                  <>
                     <SearchAddressButton
                       color="white"
-                      onClick={() => setIsModal(true)}
+                      onClick={openAddressModal}
                     >
                       주소찾기
                     </SearchAddressButton>
-                  )
+                    <Modal open={isAddressModal} close={closeAddressModal}>
+                      <PostCode
+                        onComplete={registerAddress}
+                        width={430}
+                        height={650}
+                      />
+                    </Modal>
+                  </>
                 ) : (
                   <>
                     <RegisterFormInputText
                       type="text"
                       name="address"
                       placeholder="주소를 입력해주세요"
+                      value={address}
+                      onChange={onChange}
                     />
                     <RegisterFormInputText
                       type="text"
                       name="detailedAddress"
                       placeholder="나머지 주소를 입력해주세요"
+                      value={detailedAddress}
+                      onChange={onChange}
                     />
                     <ReSearchAddressButton color="white">
                       재검색
@@ -753,9 +812,12 @@ const SearchAddressButton = styled(RegisterFormButton)`
   }
 `;
 
+const PostCode = styled(DaumPostCode)``;
+
 const ReSearchAddressButton = styled(SearchAddressButton)`
   width: 120px;
 `;
+
 const SubmitButton = styled(RegisterFormButton)`
   width: 240px;
   height: 56px;
