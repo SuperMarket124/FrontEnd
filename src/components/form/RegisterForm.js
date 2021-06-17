@@ -9,24 +9,27 @@ import Modal from "../Modal";
 import DaumPostCode from "react-daum-postcode";
 
 // TODO image url change
-// TODO 주소 검색(+재검색) -> 1순위(외부 모듈)
 // TODO 알림메시지 모달
 // TODO 이용 양관 동의 버튼
 // TODO input마다 폼 체크
 // TODO 폼 체크 후 전송
 
 const RegisterForm = () => {
-  // FIXME address(진행중)
-  // const [address, setAddress] = useState("");
-  // const [addressDetail, setAddressDetail] = useState("");
-
+  // validate
   const [idValidate, setIdValidate] = useState(true);
   const [passwordValidate, setPasswordValidate] = useState(true);
   const [passwordChkValidate, setPasswordChkValidate] = useState(true);
 
+  // address
   const [addressFlag, setAddressFlag] = useState(false);
   const [isAddressModal, setAddressModal] = useState(false);
 
+  // agree
+  const [allCheckFlag, setAllCheckFlag] = useState(false);
+  const [allBenefitCheckFlag, setAllBenefitCheckFlag] = useState(false);
+
+
+  // NOTE: birth - MM / DD
   const [inputs, setInputs] = useState({
     id: "",
     password: "",
@@ -37,7 +40,14 @@ const RegisterForm = () => {
     address: "",
     detailedAddress: "",
     birthYear: "",
-    birth: "",
+    birthMonth: "",
+    birthDay: "",
+    agreeYn: "n",
+    consentReqYn: "n",
+    consentOptYn: "n",
+    smsYn: "n",
+    mailYn: "n",
+    fourteenYn: "n",
   });
 
   const {
@@ -50,7 +60,14 @@ const RegisterForm = () => {
     address,
     detailedAddress,
     birthYear,
-    birth,
+    birthMonth,
+    birthDay,
+    agreeYn,
+    consentReqYn,
+    consentOptYn,
+    smsYn,
+    mailYn,
+    fourteenYn,
   } = inputs;
 
   const checkId = () => {
@@ -73,7 +90,7 @@ const RegisterForm = () => {
     //
   };
 
-  const onChange = (e) => {
+  const onInputChange = (e) => {
     const { value, name } = e.target;
     setInputs({
       ...inputs,
@@ -107,15 +124,15 @@ const RegisterForm = () => {
 
   const onBlur = (e) => {
     const { value, name } = e.target;
-    console.log(value, name);
+
     if (!checkValidate(value, name)) {
       showGuideText();
       return;
     }
 
     setInputs({
-      ...inputs, // 기존의 input 객체를 복사한 뒤
-      [name]: value, // name 키를 가진 값을 value 로 설정
+      ...inputs,
+      [name]: value,
     });
   };
 
@@ -146,7 +163,6 @@ const RegisterForm = () => {
       }
       _fullAddress += _extraAddress !== "" ? ` (${_extraAddress})` : "";
     }
-    console.log(_fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
 
     setInputs({
       address: _fullAddress,
@@ -156,6 +172,49 @@ const RegisterForm = () => {
     setAddressFlag(true);
 
     closeAddressModal();
+  };
+
+  const allAgreeCheck = () => {
+    const _allCheckFlag = !allCheckFlag;
+    setAllCheckFlag(_allCheckFlag);
+    setAllBenefitCheckFlag(_allCheckFlag);
+    setInputs({
+      smsYn: _allCheckFlag ? "y" : "n",
+      mailYn: _allCheckFlag ? "y" : "n",
+      agreeYn: _allCheckFlag ? "y" : "n",
+      consentReqYn: _allCheckFlag ? "y" : "n",
+      consentOptYn: _allCheckFlag ? "y" : "n",
+      smsYn: _allCheckFlag ? "y" : "n",
+      mailYn: _allCheckFlag ? "y" : "n",
+      fourteenYn: _allCheckFlag ? "y" : "n",
+    });
+  };
+
+  const allBenefitCheck = () => {
+    const _allBenefitCheckFlag = !allBenefitCheckFlag;
+    setAllBenefitCheckFlag(_allBenefitCheckFlag);
+    setInputs({
+      ...inputs,
+      smsYn: _allBenefitCheckFlag ? "y" : "n",
+      mailYn: _allBenefitCheckFlag ? "y" : "n",
+    });
+  };
+
+  const agreeCheck = (e) => {
+    const _agree = e.target;
+    const { value, name } = _agree.parentElement.querySelector("input");
+    const _value = value === "y" ? "n" : "y";
+    setInputs({
+      ...inputs,
+      [name]: _value,
+    });
+
+    if (_value === "n") {
+      setAllCheckFlag(false);
+      if (name === "smsYn" || name === "mailYn") {
+        setAllBenefitCheckFlag(false);
+      }
+    }
   };
 
   return (
@@ -181,7 +240,7 @@ const RegisterForm = () => {
                   label="아이디"
                   name="id"
                   placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
-                  onChange={onChange}
+                  onChange={onInputChange}
                   onBlur={onBlur}
                 />
                 <FeedbackButton color="white">중복확인</FeedbackButton>
@@ -205,7 +264,7 @@ const RegisterForm = () => {
                   type="password"
                   name="password"
                   placeholder="비밀번호를 입력해주세요"
-                  onChange={onChange}
+                  onChange={onInputChange}
                   onBlur={onBlur}
                 />
                 {passwordValidate ? null : (
@@ -231,7 +290,7 @@ const RegisterForm = () => {
                   type="password"
                   name="passwordChk"
                   placeholder="비밀번호를 한번 더 입력해주세요"
-                  onChange={onChange}
+                  onChange={onInputChange}
                   onBlur={onBlur}
                 />
                 {passwordChkValidate ? null : (
@@ -253,7 +312,8 @@ const RegisterForm = () => {
                   type="text"
                   name="username"
                   placeholder="이름을 입력해주세요"
-                  onChange={onChange}
+                  value={username}
+                  onChange={onInputChange}
                 />
               </td>
             </tr>
@@ -267,7 +327,7 @@ const RegisterForm = () => {
                   type="text"
                   name="email"
                   placeholder="예: supermarket@kurly.com"
-                  onChange={onChange}
+                  onChange={onInputChange}
                 />
                 <FeedbackButton color="white">중복확인</FeedbackButton>
               </td>
@@ -282,7 +342,7 @@ const RegisterForm = () => {
                   type="text"
                   name="phone"
                   placeholder="숫자만 입력해주세요"
-                  onChange={onChange}
+                  onChange={onInputChange}
                 />
               </td>
             </tr>
@@ -309,30 +369,40 @@ const RegisterForm = () => {
                     </Modal>
                   </>
                 ) : (
-                  <>
+                  <AddressView>
                     <RegisterFormInputText
                       type="text"
                       name="address"
                       placeholder="주소를 입력해주세요"
                       value={address}
-                      onChange={onChange}
+                      onChange={onInputChange}
                     />
+                    <ReSearchAddressButton
+                      color="white"
+                      onClick={openAddressModal}
+                    >
+                      재검색
+                    </ReSearchAddressButton>
+                    <Modal open={isAddressModal} close={closeAddressModal}>
+                      <PostCode
+                        onComplete={registerAddress}
+                        width={430}
+                        height={650}
+                      />
+                    </Modal>
                     <RegisterFormInputText
                       type="text"
                       name="detailedAddress"
                       placeholder="나머지 주소를 입력해주세요"
                       value={detailedAddress}
-                      onChange={onChange}
+                      onChange={onInputChange}
                     />
-                    <ReSearchAddressButton color="white">
-                      재검색
-                    </ReSearchAddressButton>
                     <GuideText>
                       <span className="info">
                         배송지에 따라 상품 정보가 달라질 수 있습니다.
                       </span>
                     </GuideText>
-                  </>
+                  </AddressView>
                 )}
               </td>
             </tr>
@@ -355,39 +425,39 @@ const RegisterForm = () => {
                     type="text"
                     name="birthYear"
                     pattern="[0-9]*"
-                    value=""
+                    value={birthYear}
                     label="생년월일"
                     size="4"
                     maxLength="4"
                     placeholder="YYYY"
-                    onChange={onChange}
+                    onChange={onInputChange}
                   />
                   <span className="bar"></span>
                   <input
                     id="birth_month"
                     className="birth__input"
                     type="text"
-                    name="birth[]"
+                    name="birthMonth"
                     pattern="[0-9]*"
-                    value=""
+                    value={birthMonth}
                     label="생년월일"
                     size="2"
                     maxLength="2"
                     placeholder="MM"
-                    onChange={onChange}
+                    onChange={onInputChange}
                   />
                   <span className="bar"></span>
                   <input
                     className="birth__input"
                     type="text"
-                    name="birth[]"
+                    name="birthDay"
                     pattern="[0-9]*"
-                    value=""
+                    value={birthDay}
                     label="생년월일"
                     size="2"
                     maxLength="2"
                     placeholder="DD"
-                    onChange={onChange}
+                    onChange={onInputChange}
                   />
                 </BirthdayText>
               </td>
@@ -401,7 +471,11 @@ const RegisterForm = () => {
                 <AllCheckView>
                   <label>
                     <input type="checkbox" />
-                    <Ico type="check"></Ico>
+                    <Ico
+                      type="check"
+                      check={allCheckFlag}
+                      onClick={allAgreeCheck}
+                    ></Ico>
                     전체 동의합니다.
                   </label>
                   <p>
@@ -411,8 +485,16 @@ const RegisterForm = () => {
                 </AllCheckView>
                 <CheckView>
                   <label>
-                    <input type="checkbox"></input>
-                    <Ico type="check"></Ico>
+                    <input
+                      type="checkbox"
+                      name="agreeYn"
+                      value={agreeYn}
+                    ></input>
+                    <Ico
+                      type="check"
+                      check={agreeYn}
+                      onClick={agreeCheck}
+                    ></Ico>
                     이용약관 동의
                     <span class="sub">(필수)</span>
                   </label>
@@ -422,8 +504,16 @@ const RegisterForm = () => {
                 </CheckView>
                 <CheckView>
                   <label>
-                    <input type="checkbox"></input>
-                    <Ico type="check"></Ico>
+                    <input
+                      type="checkbox"
+                      name="consentReqYn"
+                      value={consentReqYn}
+                    ></input>
+                    <Ico
+                      type="check"
+                      check={consentReqYn}
+                      onClick={agreeCheck}
+                    ></Ico>
                     개인정보 수집·이용 동의
                     <span class="sub">(필수)</span>
                   </label>
@@ -433,8 +523,16 @@ const RegisterForm = () => {
                 </CheckView>
                 <CheckView>
                   <label>
-                    <input type="checkbox"></input>
-                    <Ico type="check"></Ico>
+                    <input
+                      type="checkbox"
+                      name="consentOptYn"
+                      value={consentOptYn}
+                    ></input>
+                    <Ico
+                      type="check"
+                      check={consentOptYn}
+                      onClick={agreeCheck}
+                    ></Ico>
                     개인정보 수집·이용 동의
                     <span class="sub">(선택)</span>
                   </label>
@@ -444,20 +542,32 @@ const RegisterForm = () => {
                 </CheckView>
                 <CheckView>
                   <label>
-                    <input type="checkbox" name="" />
-                    <Ico type="check"></Ico>
+                    <input type="checkbox" name="consentOptYn" />
+                    <Ico
+                      type="check"
+                      check={allBenefitCheckFlag}
+                      onClick={allBenefitCheck}
+                    ></Ico>
                     무료배송, 할인쿠폰 등 혜택/정보 수신 동의
                     <span class="sub">(선택)</span>
                   </label>
                   <CheckEvent>
                     <label class="check-agree">
-                      <input type="checkbox" name="sms" />
-                      <Ico type="check"></Ico>
+                      <input type="checkbox" name="smsYn" value={smsYn} />
+                      <Ico
+                        type="check"
+                        check={smsYn}
+                        onClick={agreeCheck}
+                      ></Ico>
                       SMS
                     </label>
                     <label class="check-agree">
-                      <input type="checkbox" name="email" />
-                      <Ico type="check"></Ico>
+                      <input type="checkbox" name="mailYn" value={mailYn} />
+                      <Ico
+                        type="check"
+                        check={mailYn}
+                        onClick={agreeCheck}
+                      ></Ico>
                       이메일
                     </label>
                   </CheckEvent>
@@ -468,8 +578,16 @@ const RegisterForm = () => {
                 </CheckView>
                 <CheckView>
                   <label>
-                    <input type="checkbox"></input>
-                    <Ico type="check"></Ico>
+                    <input
+                      type="checkbox"
+                      name="fourteenYn"
+                      value={fourteenYn}
+                    ></input>
+                    <Ico
+                      type="check"
+                      check={fourteenYn}
+                      onClick={agreeCheck}
+                    ></Ico>
                     본인은 만 14세 이상입니다.
                     <span class="sub">(필수)</span>
                   </label>
@@ -717,6 +835,7 @@ const BirthdayText = styled.div`
     height: 40px;
     border: 0;
     text-align: center;
+    outline: none;
 
     &::placeholder {
       color: ${color.T_PLACE_HOLDER};
@@ -751,6 +870,14 @@ const icoStyles = css`
       background-size: auto;
       background-size: 24px 24px;
     `}
+
+  ${(props) =>
+    (props.check === true || props.check === "y") &&
+    css`
+      background: url("https://res.kurly.com/pc/service/common/2006/ico_checkbox_checked.svg")
+        no-repeat 50% 50%;
+      background-size: 24px 24px;
+    `}
 `;
 
 const Ico = styled.span`
@@ -766,6 +893,10 @@ const RegisterFormInputText = styled(FormInputText)`
   border-radius: 3px;
   outline: none;
   vertical-align: top;
+
+  & + & {
+    margin-top: 10px;
+  }
 `;
 
 const RegisterFormButton = styled(FormButton)`
@@ -815,7 +946,22 @@ const SearchAddressButton = styled(RegisterFormButton)`
 const PostCode = styled(DaumPostCode)``;
 
 const ReSearchAddressButton = styled(SearchAddressButton)`
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: top;
   width: 120px;
+  height: 44px;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 40px;
+`;
+
+const AddressView = styled.div`
+  margin: 0;
+  input[type="text"]:first-child {
+    margin-bottom: 10px;
+  }
 `;
 
 const SubmitButton = styled(RegisterFormButton)`
