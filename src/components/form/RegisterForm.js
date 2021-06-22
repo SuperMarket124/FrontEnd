@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import { color } from "../../theme";
 
-import FormInputText from "../FormInputText";
-import FormButton from "../FormButton";
-import FormRadioButton from "../FormRadioButton";
-import Modal from "../Modal";
+import FormInputText from "../common/FormInputText";
+import FormButton from "../common/FormButton";
+import FormRadioButton from "../common/FormRadioButton";
+import Modal from "../common/Modal";
+
 import DaumPostCode from "react-daum-postcode";
 
 // TODO image url change
@@ -27,7 +28,6 @@ const RegisterForm = () => {
   // agree
   const [allCheckFlag, setAllCheckFlag] = useState(false);
   const [allBenefitCheckFlag, setAllBenefitCheckFlag] = useState(false);
-
 
   // NOTE: birth - MM / DD
   const [inputs, setInputs] = useState({

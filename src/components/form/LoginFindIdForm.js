@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import FormButton from "../../components/FormButton"
-import FormInputText from "../../components/FormInputText"
+import FormButton from "../../components/common/FormButton";
+import FormInputText from "../../components/common/FormInputText";
 
 const LoginFindIdForm = () => {
   return (
@@ -11,9 +11,15 @@ const LoginFindIdForm = () => {
         <LoginFindIdView>
           <form>
             <p>이름</p>
-            <FormInputText type="text" placeholder="고객님의 이름을 입력해주세요." />
+            <FormInputText
+              type="text"
+              placeholder="고객님의 이름을 입력해주세요."
+            />
             <p>이메일</p>
-            <FormInputText type="text" placeholder="가입 시 등록하신 이메일 주소를 입력해주세요" />
+            <FormInputText
+              type="text"
+              placeholder="가입 시 등록하신 이메일 주소를 입력해주세요"
+            />
             <ConfirmButton>
               <span>확인</span>
             </ConfirmButton>
@@ -58,5 +64,5 @@ const LoginFindIdView = styled.div`
 `;
 
 const ConfirmButton = styled(FormButton)`
-    margin-top: 30px;
+  margin-top: 30px;
 `;

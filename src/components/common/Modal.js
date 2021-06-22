@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { color } from "../theme";
+import { color } from "../../theme";
 
 // TODO windows size[https://spi.maps.daum.net/postcode/guidessl#attributes]
 

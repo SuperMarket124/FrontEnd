@@ -2,12 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import delivery from "../img/delivery.gif";
 import logo from "../img/logo.png";
-import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
-import MenuOutlinedIcon from '@material-ui/icons/MenuOutlined';
-import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined'; 
-import RoomOutlinedIcon from '@material-ui/icons/Room';
-import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined"; 
+import ArrowDropDownOutlinedIcon from "@material-ui/icons/ArrowDropDownOutlined";
+import MenuOutlinedIcon from "@material-ui/icons/MenuOutlined";
+import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
+import RoomOutlinedIcon from "@material-ui/icons/Room";
+import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 
+import { Route, Link } from "react-router-dom";
+import { Register, Login, ServiceCenter } from "../pages";
 
 function Header() {
   return (
@@ -17,14 +19,23 @@ function Header() {
           <img src={delivery} />
         </HeaderLogo>
         <HeaderTopNav>
-          <span>회원가입</span>
-          <span>로그인</span>
-          <span>
-            고객센터
-            <SpanIcon>
-              < ArrowDropDownOutlinedIcon/>
-            </SpanIcon>
-          </span>
+          <Link to="/register">
+            <span>회원가입</span>
+          </Link>
+          <Link to="/login">
+            <span>로그인</span>
+          </Link>
+          <Link to="/service-center">
+            <span>
+              고객센터
+              <SpanIcon>
+                <ArrowDropDownOutlinedIcon />
+              </SpanIcon>
+            </span>
+          </Link>
+          {/* <Route path="/register" component={Register} />
+          <Route path="/login" component={Login} />
+          <Route path="/service-center" component={ServiceCenter} /> */}
         </HeaderTopNav>
       </HeaderTop>
       <HeaderBottom>
@@ -48,8 +59,8 @@ function Header() {
           </GnbSearchBox>
         </GnbSearch>
         <GnbCart>
-           <RoomOutlinedIcon className="room" />
-           <ShoppingCartOutlinedIcon className="cart"/>
+          <RoomOutlinedIcon className="room" />
+          <ShoppingCartOutlinedIcon className="cart" />
         </GnbCart>
       </HeaderGnb>
     </HeaderStyle>
@@ -116,7 +127,6 @@ const HeaderGnb = styled.div`
   align-items: center;
   font-weight: 700;
   font-size: 16px;
-  
 `;
 const GnbCategory = styled.a`
   display: flex;
@@ -152,26 +162,21 @@ const GnbSearchBox = styled.div`
   background: #f7f7f7;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
-  border: 1px solid #f7f7f6; ;
-  padding:0px 5px;
+  border: 1px solid #f7f7f6;
+  padding: 0px 5px;
 `;
 const GnbCart = styled.div`
-  
-  padding-left:45px;
-  display:flex;
-  width:100px;
-  
- 
-  .room{
-      font-size:35px;
-      background:#fff;
-      
+  padding-left: 45px;
+  display: flex;
+  width: 100px;
+
+  .room {
+    font-size: 35px;
+    background: #fff;
   }
 
-  .cart{
-      margin-left:2rem;
-      font-size:35px;
+  .cart {
+    margin-left: 2rem;
+    font-size: 35px;
   }
-
-  
-`
+`;

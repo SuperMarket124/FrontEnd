@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { color } from "../theme";
+import { color } from "../../theme";
 
 const StyledInputText = styled.input`
   width: 100%;

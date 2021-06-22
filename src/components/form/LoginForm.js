@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import FormButton from "../../components/FormButton";
-import FormInputText from "../../components/FormInputText";
+import FormButton from "../../components/common/FormButton";
+import FormInputText from "../../components/common/FormInputText";
 import axios from "axios";
 
 const LoginForm = () => {
