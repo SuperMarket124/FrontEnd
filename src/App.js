@@ -1,9 +1,10 @@
 import "./App.css";
 import { Switch, Route } from "react-router-dom";
-import Layout from "./components/Layout";
 import { LoginForm, RegisterForm } from "./components/form";
-import { ServiceCenter } from "./pages";
+import { ServiceCenter, Event } from "./pages";
+import { Layout, MainArticle } from "./components";
 
+// TODO suroutingb
 function App() {
   return (
     <Layout>
@@ -15,9 +16,13 @@ function App() {
             <span>test home</span>;
           }}
         />
-        <Route path="/register" component={RegisterForm} />
-        <Route path="/login" component={LoginForm} />
-        <Route path="/service-center" component={ServiceCenter} />
+        {/* Member */}
+        <Route path="/member/join" component={RegisterForm} />
+        <Route path="/member/login" component={LoginForm} />
+        {/* Boards */}
+        <Route path="/board" component={ServiceCenter} />
+        {/* Goods */}
+        <Route path="/goods/event" component={Event} />
       </Switch>
     </Layout>
   );

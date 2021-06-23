@@ -18,8 +18,10 @@ const Section = styled.div`
 `;
 
 const Content = styled.div`
-  padding-bottom: 0;
+  /* padding-bottom: 0;
   min-width: 1050px;
   padding-bottom: 120px;
-  position: relative;
+  position: relative; */
+  min-width: 1050px;
+  padding-bottom: 120px;
 `;
