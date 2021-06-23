@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Header from "../components/Header";
-import MainSection from "../components/MainSection";
+import { Header, Footer, MainSection } from "../components";
 
 const Layout = ({ children, match, location, history }) => {
   return (
@@ -9,6 +8,7 @@ const Layout = ({ children, match, location, history }) => {
       <Container>
         <Header />
         <MainSection>{children}</MainSection>
+        <Footer />
       </Container>
     </>
   );

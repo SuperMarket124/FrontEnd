@@ -145,3 +145,40 @@ a {
   text-decoration: none;
   outline: none;
 }
+
+body,
+input,
+select,
+textarea,
+button {
+  font-family: noto sans, malgun gothic, AppleGothic, dotum;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: #4c4c4c;
+  font-size: 12px;
+  max-width: 100%;
+}
+
+div,
+th,
+td,
+li,
+dt,
+dd,
+p {
+  word-break: break-all;
+}
+
+img {
+  border: 0;
+}
+
+img,
+video,
+canvas {
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}

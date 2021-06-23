@@ -19,13 +19,13 @@ function Header() {
           <img src={delivery} />
         </HeaderLogo>
         <HeaderTopNav>
-          <Link to="/register">
+          <Link to="/member/join">
             <span>회원가입</span>
           </Link>
-          <Link to="/login">
+          <Link to="/member/login">
             <span>로그인</span>
           </Link>
-          <Link to="/service-center">
+          <Link to="/board">
             <span>
               고객센터
               <SpanIcon>
@@ -50,7 +50,7 @@ function Header() {
           <a>신상품</a>
           <a>베스트</a>
           <a>알뜰쇼핑</a>
-          <a>특가/혜택</a>
+          <Link to="/goods/event">특가/혜택</Link>
         </GnbNav>
         <GnbSearch>
           <GnbInput type="text" />
