@@ -9,6 +9,8 @@ import Modal from "../common/Modal";
 
 import DaumPostCode from "react-daum-postcode";
 
+import { Link } from "react-router-dom";
+
 // TODO image url change
 // TODO 알림메시지 모달
 // TODO 이용 양관 동의 버튼
@@ -496,11 +498,11 @@ const RegisterForm = () => {
                       onClick={agreeCheck}
                     ></Ico>
                     이용약관 동의
-                    <span class="sub">(필수)</span>
+                    <span className="sub">(필수)</span>
                   </label>
-                  <a href="#none" className="btn__link">
+                  <Link to="#none" className="btn__link">
                     약관보기
-                  </a>
+                  </Link>
                 </CheckView>
                 <CheckView>
                   <label>
@@ -515,11 +517,11 @@ const RegisterForm = () => {
                       onClick={agreeCheck}
                     ></Ico>
                     개인정보 수집·이용 동의
-                    <span class="sub">(필수)</span>
+                    <span className="sub">(필수)</span>
                   </label>
-                  <a href="#none" className="btn__link">
+                  <Link to="#none" className="btn__link">
                     약관보기
-                  </a>
+                  </Link>
                 </CheckView>
                 <CheckView>
                   <label>
@@ -534,11 +536,11 @@ const RegisterForm = () => {
                       onClick={agreeCheck}
                     ></Ico>
                     개인정보 수집·이용 동의
-                    <span class="sub">(선택)</span>
+                    <span className="sub">(선택)</span>
                   </label>
-                  <a href="#none" className="btn__link">
+                  <Link to="#none" className="btn__link">
                     약관보기
-                  </a>
+                  </Link>
                 </CheckView>
                 <CheckView>
                   <label>
@@ -549,10 +551,10 @@ const RegisterForm = () => {
                       onClick={allBenefitCheck}
                     ></Ico>
                     무료배송, 할인쿠폰 등 혜택/정보 수신 동의
-                    <span class="sub">(선택)</span>
+                    <span className="sub">(선택)</span>
                   </label>
                   <CheckEvent>
-                    <label class="check-agree">
+                    <label className="check-agree">
                       <input type="checkbox" name="smsYn" value={smsYn} />
                       <Ico
                         type="check"
@@ -561,7 +563,7 @@ const RegisterForm = () => {
                       ></Ico>
                       SMS
                     </label>
-                    <label class="check-agree">
+                    <label className="check-agree">
                       <input type="checkbox" name="mailYn" value={mailYn} />
                       <Ico
                         type="check"
@@ -589,7 +591,7 @@ const RegisterForm = () => {
                       onClick={agreeCheck}
                     ></Ico>
                     본인은 만 14세 이상입니다.
-                    <span class="sub">(필수)</span>
+                    <span className="sub">(필수)</span>
                   </label>
                 </CheckView>
               </td>
@@ -649,7 +651,7 @@ const MemberJoinForm = styled.section`
   }
 `;
 
-const InputTable = styled.div`
+const InputTable = styled.table`
   width: 100%;
 
   th {

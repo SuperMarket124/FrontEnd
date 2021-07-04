@@ -1,87 +1,64 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import FormButton from "../../components/common/FormButton";
-import FormInputText from "../../components/common/FormInputText";
-import axios from "axios";
+import {
+  FormButton,
+  FormInputText,
+  ErrorMessage,
+} from "../../components/common/";
+import useForm from "../../lib/useForm";
+import { loginFormValidate } from "../../lib/validate";
 
-const LoginForm = () => {
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [inputs, setInputs] = useState({
-    id: "",
-    password: "",
+// TODO: email(테스트용) -> id
+const LoginForm = ({ onLogin }) => {
+  const { values, errors, submitting, handleChange, handleSubmit } = useForm({
+    initialValues: { email: "test2@test.com", password: "qlalfqjsgh11" },
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+      console.log("form");
+      onLogin(values);
+    },
+    validate: loginFormValidate,
   });
-
-  const { id, password } = inputs;
-
-  const login = async () => {
-    try {
-      // 초기화
-      setError(null);
-      setToken(null);
-      setLoading(true);
-      const response = await axios.post(
-        "http://ydhdelivery.shop/authenticate",
-        {
-          name: id,
-          password: password,
-        }
-      );
-      // if (response.status === "200") {
-      //   setToken(response.data.token);
-      //   sessionStorage.setItem("token", response.data.token);
-      // } else {
-      //   alert("password erorr");
-      // }
-      setToken(response.data.token);
-      sessionStorage.setItem("token", response.data.token);
-    } catch (e) {
-      setError(e);
-    }
-    setLoading(false);
-  };
-
-  const onInputChange = (e) => {
-    const { value, name } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
-  };
-
-  if (loading) return <div>로딩중..</div>;
-  if (error) return <div>에러가 발생했습니다</div>;
 
   return (
     <LoginSection>
       <h3>로그인</h3>
       <WriteForm>
         <LoginView>
-          <form>
+          <form noValidate method="post">
             <FormInputText
               type="text"
-              placeholder="아이디를 입력해주세요"
-              name="id"
-              value={id}
-              onChange={onInputChange}
+              placeholder="이메일을 입력해주세요"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+              className={errors && errors.email && "errorInput"}
             />
+            {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
+
             <FormInputText
               type="password"
               name="password"
               placeholder="비밀번호를 입력해주세요"
-              value={password}
-              onChange={onInputChange}
+              value={values.password}
+              onChange={handleChange}
+              className={errors && errors.password && "errorInput"}
             />
+            {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
+
             <LoginSearch>
-              <a>아이디 찾기</a>
+              <span>아이디 찾기</span>
               <Bar></Bar>
-              <a>비밀번호 찾기</a>
+              <span>비밀번호 찾기</span>
             </LoginSearch>
-            <FormButton color="purple" onClick={login} type="">
+            <FormButton
+              onClick={handleSubmit}
+              color="purple"
+              disabled={submitting}
+            >
               로그인
             </FormButton>
-            <div>{token}</div>
+            {/* <div>{token}</div> */}
           </form>
           <RegisterButton color="white">회원가입</RegisterButton>
         </LoginView>
@@ -90,7 +67,7 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default React.memo(LoginForm);
 
 const LoginSection = styled.section`
   width: 340px;
