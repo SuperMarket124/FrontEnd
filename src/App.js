@@ -1,6 +1,7 @@
 import "./App.css";
 import { Switch, Route } from "react-router-dom";
 import { LoginForm, RegisterForm } from "./components/form";
+import LoginFormContainer from "./containers/LoginFormContainer";
 import { ServiceCenter, Event } from "./pages";
 import { Layout, MainArticle } from "./components";
 
@@ -17,8 +18,8 @@ function App() {
           }}
         />
         {/* Member */}
-        <Route path="/member/join" component={RegisterForm} />
-        <Route path="/member/login" component={LoginForm} />
+        <Route path="/join" component={RegisterForm} />
+        <Route path="/login" component={LoginFormContainer} />
         {/* Boards */}
         <Route path="/board" component={ServiceCenter} />
         {/* Goods */}

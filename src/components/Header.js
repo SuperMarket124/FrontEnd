@@ -7,6 +7,7 @@ import MenuOutlinedIcon from "@material-ui/icons/MenuOutlined";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import RoomOutlinedIcon from "@material-ui/icons/Room";
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
+import { color } from "../theme";
 
 import { Route, Link } from "react-router-dom";
 import { Register, Login, ServiceCenter } from "../pages";
@@ -19,10 +20,10 @@ function Header() {
           <img src={delivery} />
         </HeaderLogo>
         <HeaderTopNav>
-          <Link to="/member/join">
+          <Link to="/join">
             <span>회원가입</span>
           </Link>
-          <Link to="/member/login">
+          <Link to="/login">
             <span>로그인</span>
           </Link>
           <Link to="/board">
@@ -60,6 +61,25 @@ function Header() {
         </GnbSearch>
         <GnbCart>
           <RoomOutlinedIcon className="room" />
+          <LocationSet>
+            <button type="button" class="btn_location on">
+              배송지 설정하기
+            </button>
+            <div className="layer_location">
+              <div class="no_address">
+                <span class="emph">배송지를 등록</span>하고
+                <br />
+                <div class="group_button double">
+                  <button type="button" class="btn default login">
+                    로그인
+                  </button>
+                  <button type="button" class="btn active searchAddress">
+                    <span class="ico"></span>주소검색
+                  </button>
+                </div>
+              </div>
+            </div>
+          </LocationSet>
           <ShoppingCartOutlinedIcon className="cart" />
         </GnbCart>
       </HeaderGnb>
@@ -179,4 +199,16 @@ const GnbCart = styled.div`
     margin-left: 2rem;
     font-size: 35px;
   }
+`;
+
+const LocationSet = styled.div`
+  display: none;
+  position: absolute;
+  z-index: 300;
+  right: 41px;
+  top: 56px;
+  width: 308px;
+  padding: 20px 18px 19px 20px;
+  border: 1px solid #ddd;
+  background-color: #fff;
 `;

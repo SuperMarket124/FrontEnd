@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import FormButton from "../../components/common/FormButton";
 import FormInputText from "../../components/common/FormInputText";
-import axios from "axios";
+// import axios from "axios";
 
-const LoginForm = () => {
+const LoginForm = ({ onLogin }) => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -15,32 +15,55 @@ const LoginForm = () => {
 
   const { id, password } = inputs;
 
-  const login = async () => {
-    try {
-      // 초기화
-      setError(null);
-      setToken(null);
-      setLoading(true);
-      const response = await axios.post(
-        "http://ydhdelivery.shop/authenticate",
-        {
-          name: id,
-          password: password,
-        }
-      );
-      // if (response.status === "200") {
-      //   setToken(response.data.token);
-      //   sessionStorage.setItem("token", response.data.token);
-      // } else {
-      //   alert("password erorr");
-      // }
-      setToken(response.data.token);
-      sessionStorage.setItem("token", response.data.token);
-    } catch (e) {
-      setError(e);
-    }
-    setLoading(false);
-  };
+  // const login = () => {
+  //   const data = {
+  //     email: id,
+  //     password,
+  //   };
+  //   axios
+  //     .post("/login", data)
+  //     .then((response) => {
+  //       const { accessToken } = response.data;
+
+  //       // API 요청하는 콜마다헤더에 accessToken 담아 보내도록 설정
+  //       axios.defaults.headers.common[
+  //         "Authorization"
+  //       ] = `Bearer ${accessToken}`;
+
+  //       console.log(`access token: ${accessToken}`);
+  //       // accessToken을 localStorage, cookie 등에 저장하지 않는다!
+  //     })
+  //     .catch((error) => {
+  //       // ... 에러 처리
+  //       console.log(error);
+  //     });
+  // };
+  // const login = async () => {
+  //   try {
+  //     // 초기화
+  //     setError(null);
+  //     setToken(null);
+  //     setLoading(true);
+  //     const response = await axios.post(
+  //       "http://ydhdelivery.shop/authenticate",
+  //       {
+  //         name: id,
+  //         password: password,
+  //       }
+  //     );
+  //     // if (response.status === "200") {
+  //     //   setToken(response.data.token);
+  //     //   sessionStorage.setItem("token", response.data.token);
+  //     // } else {
+  //     //   alert("password erorr");
+  //     // }
+  //     setToken(response.data.token);
+  //     sessionStorage.setItem("token", response.data.token);
+  //   } catch (e) {
+  //     setError(e);
+  //   }
+  //   setLoading(false);
+  // };
 
   const onInputChange = (e) => {
     const { value, name } = e.target;
@@ -78,7 +101,7 @@ const LoginForm = () => {
               <Bar></Bar>
               <a>비밀번호 찾기</a>
             </LoginSearch>
-            <FormButton color="purple" onClick={login} type="">
+            <FormButton color="purple" onClick={onLogin}>
               로그인
             </FormButton>
             <div>{token}</div>
@@ -90,7 +113,7 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default React.memo(LoginForm);
 
 const LoginSection = styled.section`
   width: 340px;
