@@ -1,14 +1,16 @@
 {
   "users": [
-    {
-      "email": "tester@email.com",
-      "password": "qlalfqjsgh11",
-      "id": 1
+    { 
+      "id": 1,
+      "email": "test1@test.com",
+      "userId": "test1",
+      "password": "qlalfqjsgh11"
     },
     {
-      "email": "tester2@email.com",
-      "password": "$2a$10$fd.oN8RNZGPcXm.TimGcy.1cDjy0MMjy7Y7dzJm3/y6pkMQn9Nsf6",
-      "id": 2
+      "id": 2,
+      "email": "test2@test.com",
+      "userId": "test2",
+      "password": "$2a$10$fd.oN8RNZGPcXm.TimGcy.1cDjy0MMjy7Y7dzJm3/y6pkMQn9Nsf6"
     }
   ]
 }
